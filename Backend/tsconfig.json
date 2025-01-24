@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",         // Versão de JavaScript de saída
+    "module": "CommonJS",       // Módulo compatível com Node.js
+    "strict": true,             // Ativa verificações rigorosas
+    "outDir": "./dist",         // Diretório de saída dos arquivos compilados
+    "rootDir": "./src",         // Diretório raiz dos arquivos TypeScript
+    "esModuleInterop": true,     // Habilita compatibilidade com módulos ES6
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false
+  }
+}

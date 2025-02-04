@@ -3,6 +3,7 @@ import { AppDataSource } from "../data-source"
 import { User } from "../entities/User"
 import { checkPassword } from "../helpers/hash"
 import jwt from "jsonwebtoken"
+import { validateObject } from "../helpers/typeGuard"
 
 type UserLoginData = {
   email: string
@@ -16,24 +17,17 @@ export const loginHandler = async (req: Request, res: Response) => {
   const body = req.body
 
   if (
-    "email" in body &&
-    typeof body.email === "string" &&
-    "password" in body &&
-    typeof body.password === "string"
+    validateObject<UserLoginData>(body, { email: "string", password: "string" })
   ) {
     // login
-    const userData = body as UserLoginData
-    const user = await userRepository.findOneBy({ email: userData.email })
+    const user = await userRepository.findOneBy({ email: body.email })
 
     if (!user) {
       res.status(400).json({ message: WRONG_CREDENTIALS_ERROR })
       return
     }
 
-    const isCorrectPassword = await checkPassword(
-      user.password,
-      userData.password,
-    )
+    const isCorrectPassword = await checkPassword(user.password, body.password)
 
     if (!isCorrectPassword) {
       res.status(400).json({ message: WRONG_CREDENTIALS_ERROR })

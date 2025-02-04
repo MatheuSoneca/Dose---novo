@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { AppDataSource } from "../data-source"
 import { User } from "../entities/User"
 import { passwordToHash } from "../helpers/hash"
+import { validateObject } from "../helpers/typeGuard"
 
 type UserSignupData = {
   username: string
@@ -14,22 +15,21 @@ export const signupHandler = async (req: Request, res: Response) => {
   const body = req.body
 
   if (
-    "email" in body &&
-    typeof body.email === "string" &&
-    "password" in body &&
-    typeof body.password === "string" &&
-    "username" in body &&
-    typeof body.username === "string"
+    validateObject<UserSignupData>(body, {
+      email: "string",
+      password: "string",
+      username: "string",
+    })
   ) {
     //CRIAR USUARIO
-    const userData = body as UserSignupData
+    // const userData = body as UserSignupData
     const user = await userRepository.findOne({
-      where: [{ email: userData.email }, { username: userData.username }],
+      where: [{ email: body.email }, { username: body.username }],
     })
 
     if (user) {
       const errorMessage =
-        user.email === userData.email
+        user.email === body.email
           ? "Email já cadastrado."
           : "Username já cadastrado."
       res.status(400).json({ message: errorMessage })
@@ -37,15 +37,16 @@ export const signupHandler = async (req: Request, res: Response) => {
     }
 
     const newUser = new User()
-    newUser.username = userData.username
-    newUser.email = userData.email
-    newUser.password = await passwordToHash(userData.password)
+    newUser.username = body.username
+    newUser.email = body.email
+    newUser.password = await passwordToHash(body.password)
 
     await userRepository.save(newUser)
 
     res.status(201).end()
     return
   }
+
   //RETORNA ERRO
   res.status(400).json({ message: "Dados Inválidos." })
 }

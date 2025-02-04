@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { Comment } from "./Comment"
 
-enum UserRole {
+export enum UserRole {
   Admin = "admin",
   Member = "member",
 }
@@ -25,4 +26,7 @@ export class User {
     default: UserRole.Member, // (opcional) define valor padrão
   })
   role: UserRole
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[]
 }

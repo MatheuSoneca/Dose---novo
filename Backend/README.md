@@ -13,15 +13,15 @@
 
 ### POSTS/DRINKS
 
-- [ ] Listagem de drinks
-- [ ] Post individual
-- [ ] Criação de post
+- [x] Listagem de drinks
+- [x] Post individual
+- [x] Criação de post
 - [ ] Like / upvote
 
 ### COMENTÁRIOS
 
-- [ ] Criação de comentários
-- [ ] Deletar comentários
+- [x] Criação de comentários
+- [x] Deletar comentários
 - [ ] Like / upvote
 
 ## FRONT

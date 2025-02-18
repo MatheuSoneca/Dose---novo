@@ -1,7 +1,8 @@
 import { Request, Response } from "express"
 import { AppDataSource } from "../data-source"
 import { Drink } from "../entities/Drink"
-import { parseId } from "../helpers/endpoint"
+import { handleAuthHttpResponse, parseId } from "../helpers/endpoint"
+import { countLikes, verifyLike } from "../helpers/like"
 
 export const drinkHandler = async (req: Request, res: Response) => {
   const drinksRepository = AppDataSource.getRepository(Drink)
@@ -13,11 +14,15 @@ export const drinkHandler = async (req: Request, res: Response) => {
     relations: ["comments"],
   })
 
-  if (drink) {
-    res.status(200).json({ drink })
+  if (!drink) {
+    res.status(400).json({ message: "ID inválido" })
     return
   }
 
-  res.status(400).json({ message: "ID inválido" })
-  return
+  const user = await handleAuthHttpResponse(req, res)
+  const isLiked = user ? await verifyLike(drink, user) : false
+
+  const likes = await countLikes(Drink, drinkId)
+
+  res.status(200).json({ ...drink, likes, isLiked })
 }

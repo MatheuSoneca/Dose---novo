@@ -16,12 +16,14 @@
 - [x] Listagem de drinks
 - [x] Post individual
 - [x] Criação de post
-- [ ] Like / upvote
+- [x] Like / upvote
+- [x] verificar para somente conseguir dar um like por drink com o mesmo usuario
 
 ### COMENTÁRIOS
 
 - [x] Criação de comentários
 - [x] Deletar comentários
-- [ ] Like / upvote
+- [x] Like / upvote
+- [x] verificar para somente conseguir dar um like por coment com o mesmo usuario
 
 ## FRONT

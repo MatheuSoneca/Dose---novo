@@ -42,6 +42,24 @@ export const handleAuthHttpResponse = async (
   }
 }
 
+export const getUser = async (req: Request): Promise<User | undefined> => {
+  const token = extractAuthToken(req.headers.authorization)
+  if (!token) return
+
+  const userData = verifyToken(token)
+  if (
+    typeof userData === "string" ||
+    !validateObject(userData, { username: "string", email: "string" })
+  ) {
+    return
+  }
+
+  const userRepository = AppDataSource.getRepository(User)
+  const user = await userRepository.findOneBy({ email: userData.email })
+
+  return user || undefined
+}
+
 export const parseId = (id: string, res: Response): number | undefined => {
   const numberId = Number(id)
   if (isNaN(numberId)) {

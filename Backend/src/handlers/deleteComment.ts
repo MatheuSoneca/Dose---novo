@@ -1,10 +1,7 @@
-import express, { Request, Response } from "express"
-import { extractAuthToken, verifyToken } from "../helpers/auth"
-import { validateObject } from "../helpers/typeGuard"
+import { Request, Response } from "express"
 import { AppDataSource } from "../data-source"
-import { User, UserRole } from "../entities/User"
+import { UserRole } from "../entities/User"
 import { handleAuthHttpResponse, parseId } from "../helpers/endpoint"
-import { Drink } from "../entities/Drink"
 import { Comment } from "../entities/Comment"
 
 export const deleteCommentHandler = async (req: Request, res: Response) => {

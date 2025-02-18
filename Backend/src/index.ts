@@ -6,8 +6,12 @@ import dotenv from "dotenv"
 import { drinksHandler } from "./handlers/drinks"
 import { newDrinkHandler } from "./handlers/newDrink"
 import { drinkHandler } from "./handlers/drink"
-import { commentHandler } from "./handlers/comment"
+import { newCommentHandler } from "./handlers/newComment"
 import { deleteCommentHandler } from "./handlers/deleteComment"
+import { buildLikeHandler } from "./handlers/buildLike"
+import { Drink } from "./entities/Drink"
+import { Comment } from "./entities/Comment"
+import { commentLikeHandler } from "./handlers/commentLike"
 
 dotenv.config()
 
@@ -22,8 +26,11 @@ app.post("/login", loginHandler)
 app.get("/drinks", drinksHandler)
 app.post("/drinks/new", newDrinkHandler)
 app.get("/drinks/:id", drinkHandler)
-app.post("/drinks/:id/comment", commentHandler)
+app.post("/drinks/:id/comment", newCommentHandler)
 app.delete("/drinks/:drinkId/comment/:commentId", deleteCommentHandler)
+app.post("/drinks/:drinkId/like", buildLikeHandler(Drink))
+app.post("/drinks/:drinkId/comment/:commentId/like", buildLikeHandler(Comment))
+app.get("/drinks/:drinkId/comment/:commentId/like", commentLikeHandler)
 
 AppDataSource.initialize()
   .then(() => {

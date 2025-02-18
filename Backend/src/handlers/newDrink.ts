@@ -2,8 +2,7 @@ import { Request, Response } from "express"
 import { AppDataSource } from "../data-source"
 import { Drink } from "../entities/Drink"
 import { validateObject } from "../helpers/typeGuard"
-import { extractAuthToken, verifyToken } from "../helpers/auth"
-import { User, UserRole } from "../entities/User"
+import { UserRole } from "../entities/User"
 import { handleAuthHttpResponse } from "../helpers/endpoint"
 
 type NewDrinkData = {
